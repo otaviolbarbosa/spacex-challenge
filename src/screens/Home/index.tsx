@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { LaunchType, RootStackParamList } from '../../Navigation';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -39,6 +39,7 @@ const Home = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
       <Text style={styles.title}>Latest Launches</Text>
       <FlatList
         data={data.launchesPast}
@@ -61,22 +62,23 @@ const Home = ({ navigation }: Props) => {
               </View>
             </TouchableOpacity>
           </View>
-
         )}
+        style={styles.list}
       />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { paddingHorizontal: 20 },
-  title: { fontSize: 20, fontWeight: 'bold', paddingVertical: 15 },
+  container: { display: 'flex'},
+  title: { fontSize: 20, fontWeight: 'bold', paddingHorizontal: 20, paddingVertical: 15 },
+  list: { paddingHorizontal: 20 },
   card: { 
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#fff',
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset:{
       width: 0,
@@ -89,8 +91,8 @@ const styles = StyleSheet.create({
   cardImage: {
     width: 120,
     height: 120,
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
     marginRight: 15
   },
   infoContainer: {

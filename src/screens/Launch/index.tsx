@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigation';
 import moment from 'moment';
@@ -10,12 +10,15 @@ type Props = StackScreenProps<RootStackParamList, 'Launch'>;
 
 const Launch = ({ route }: Props) => {
   const { params: { launch }} = route;
+
   const handlePress = useCallback(async () => {
     launch.links.article_link && await Linking.openURL(launch.links.article_link);
   }, []);
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <StatusBar barStyle="light-content" backgroundColor="#ecf0f1" />
+      <View style={styles.sliderContainer}>
         <Slider images={launch.links.flickr_images.slice(0, 3)} />
       </View>
       <View style={styles.infoContainer}>
@@ -56,8 +59,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -50
   },
-  imageContainer: {
-    flexGrow: 0.7,
+  sliderContainer: {
+    flexGrow: 0.7
   },
   image: {
     flex: 1,

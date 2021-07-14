@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Image, View, Text, ScrollView, Dimensions, StyleSheet, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const { width, height: originalHeight } = Dimensions.get('window');
-const height = originalHeight * 0.7;
+const { width } = Dimensions.get('window');
+const height = '100%';
 
 type Props = {
   images: string[]
@@ -11,7 +11,7 @@ type Props = {
 
 const Slider = ({ images }: Props) => {
   const [activePage, setActivePage] = useState<Number>(0);
-  const [favourite, setFavourite] = useState<Number>();
+  const [favourite, setFavourite] = useState<Number | null>(null);
 
   const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
@@ -21,7 +21,10 @@ const Slider = ({ images }: Props) => {
   }
 
   const handlePressFavourite = () => {
-    setFavourite(activePage);
+    if(favourite !== activePage)
+      setFavourite(activePage);
+    else
+      setFavourite(null);
   }
 
   return (
@@ -63,14 +66,48 @@ const Slider = ({ images }: Props) => {
 }
 
 const styles = StyleSheet.create({
-  container: { marginTop: 50, width, height },
-  scroll: { width, height},
-  image: { width, height, resizeMode: 'cover' },
-  pagination: { flexDirection: 'row', position: 'absolute', bottom: 0, alignSelf: 'center'},
-  page: { color: '#888', margin: 3 },
-  activePage: { color: '#fff', margin: 3 },
-  favouriteContainer: { color: '#fff', flexDirection: 'row', position: 'absolute', bottom: 0, alignSelf: 'flex-end' },
-  favouriteButton: { padding: 10},
-  favouriteText: { color: '#fff' }
+  container: {
+    marginTop: 50,
+    flex: 1
+  },
+  scroll: {
+    width,
+    height
+  },
+  image: {
+    width,
+    height,
+    resizeMode: 'cover',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20
+  },
+  pagination: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 5,
+    alignSelf: 'center'
+  },
+  page: {
+    color: '#888',
+    margin: 3
+  },
+  activePage: {
+    color: '#fff',
+    margin: 3
+  },
+  favouriteContainer: {
+    color: '#fff',
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'flex-end'
+  },
+  favouriteButton: {
+    margin: 15
+  },
+  favouriteText: {
+    color: '#fff'
+  }
 });
+
 export default Slider;
