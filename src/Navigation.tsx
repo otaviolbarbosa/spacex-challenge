@@ -21,7 +21,18 @@ export const MyStack = () => {
           component={HomeScreen}
           options={{ title: 'Welcome' }}
         />
-        <Stack.Screen name="Mission" component={MissionScreen} />
+        <Stack.Screen
+          name="Mission"
+          component={MissionScreen}
+          options={{
+            title: '',
+            headerTransparent: true,
+            headerBackTitleVisible: false,
+            headerTintColor: '#fff',
+            safeAreaInsets: {
+            }
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
