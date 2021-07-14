@@ -27,7 +27,7 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export const MyStack = () => {
+export const StackNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>

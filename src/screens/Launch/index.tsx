@@ -6,8 +6,6 @@ import moment from 'moment';
 import { useCallback } from 'react';
 import Slider from '../../components/Slider';
 
-// import { Container } from './styles';
-
 type Props = StackScreenProps<RootStackParamList, 'Launch'>;
 
 const Launch = ({ route }: Props) => {
@@ -59,7 +57,6 @@ const styles = StyleSheet.create({
     marginTop: -50
   },
   imageContainer: {
-    // backgroundColor: 'red',
     flexGrow: 0.7,
   },
   image: {

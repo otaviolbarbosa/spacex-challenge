@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { LaunchType, RootStackParamList } from '../../Navigation';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -8,8 +8,6 @@ import { gql, useQuery } from '@apollo/client'
 import AppLoading from 'expo-app-loading';
 import moment from 'moment';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-// import { Container } from './styles';
 
 const LAUNCHES_QUERY = gql`
   query Launches {
@@ -31,7 +29,6 @@ const LAUNCHES_QUERY = gql`
 `;
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
-type ItemProps = StackScreenProps<RootStackParamList, 'Home'>;
 
 const Home = ({ navigation }: Props) => {
   const { data, loading } = useQuery(LAUNCHES_QUERY)
@@ -59,7 +56,6 @@ const Home = ({ navigation }: Props) => {
                 <View style={styles.infoContainer}>
                   <Text style={styles.missionTitle}>{item.mission_name}</Text>
                   <Text style={styles.missionDate}>{moment(item.launch_date_local).startOf('day').fromNow()}</Text>
-                  {/* <Text style={styles.missionDate}>{moment(item.launch_date_local).format("MMM Do, YYYY")}</Text> */}
                 </View>
                 <View style={styles.linkContainer}>
                   <Icon style={styles.navigationIcon} name="chevron-right" />

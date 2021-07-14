@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Image, View, Text, ScrollView, Dimensions, StyleSheet, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-// import { Container } from './styles';
 
 const { width, height: originalHeight } = Dimensions.get('window');
 const height = originalHeight * 0.7;

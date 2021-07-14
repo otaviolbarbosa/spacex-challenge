@@ -1,8 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { MyStack } from './src/Navigation';
+import { StackNavigation } from './src/Navigation';
 
 const client = new ApolloClient({
   uri: 'https://api.spacex.land/graphql/',
@@ -14,7 +13,7 @@ console.log('teste');
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <MyStack />
+      <StackNavigation />
     </ApolloProvider>
   );
 }
