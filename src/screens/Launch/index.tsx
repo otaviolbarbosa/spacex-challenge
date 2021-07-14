@@ -19,7 +19,7 @@ const Launch = ({ route }: Props) => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#ecf0f1" />
       <View style={styles.sliderContainer}>
-        <Slider images={launch.links.flickr_images.slice(0, 3)} />
+        <Slider id={launch.id} images={launch.links.flickr_images.slice(0, 3)} />
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoContainerWrapper}>
@@ -37,7 +37,7 @@ const Launch = ({ route }: Props) => {
           </View>
           <View style={styles.infoUnitContainer}>
             <Text style={styles.label}>Site</Text>
-            <Text style={styles.value}>Site Name Test</Text>
+            <Text style={styles.value}>{launch.launch_site.site_name_long}</Text>
           </View>
           { launch.links.article_link && (
             <TouchableOpacity

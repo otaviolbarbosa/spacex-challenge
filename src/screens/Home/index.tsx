@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { LaunchType, RootStackParamList } from '../../Navigation';
@@ -9,9 +9,12 @@ import AppLoading from 'expo-app-loading';
 import moment from 'moment';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import logo from '../../../assets/spacex-square-logo.png';
+
 const LAUNCHES_QUERY = gql`
   query Launches {
     launchesPast(limit: 10) {
+      id
       mission_name
       launch_date_local
       launch_site {
@@ -50,7 +53,7 @@ const Home = ({ navigation }: Props) => {
               onPress={() => navigation.push('Launch', { launch: item })}
             >
               <Image
-                source={{ uri: item.links.flickr_images[0] }}
+                source={ item.links.flickr_images.length > 0 ? { uri: item.links.flickr_images[0] } : logo  }
                 style={styles.cardImage}
               />
               <View style={styles.infoContainer}>

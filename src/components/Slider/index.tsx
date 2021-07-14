@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { Image, View, Text, ScrollView, Dimensions, StyleSheet, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import _ from 'lodash';
+
+import { ImagesContext } from '../../../App';
+
+import logo from '../../../assets/spacex-big-logo.png';
 
 const { width } = Dimensions.get('window');
 const height = '100%';
 
 type Props = {
+  id: string
   images: string[]
 }
 
-const Slider = ({ images }: Props) => {
-  const [activePage, setActivePage] = useState<Number>(0);
-  const [favourite, setFavourite] = useState<Number | null>(null);
+const Slider = ({ id, images }: Props) => {
+  const [activePage, setActivePage] = useState<number>(0);
 
   const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
@@ -20,48 +25,61 @@ const Slider = ({ images }: Props) => {
       setActivePage(slide);
   }
 
-  const handlePressFavourite = () => {
-    if(favourite !== activePage)
-      setFavourite(activePage);
-    else
-      setFavourite(null);
-  }
-
   return (
-    <View style={styles.container}>
-      <ScrollView
-        pagingEnabled
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        style={styles.scroll}
-      >
-        {images.map((image, index) => (
-          <Image
-            key={index}
-            source={{ uri: image}}
-            style={styles.image}
-          />
-        ))}
-      </ScrollView>
-      <View style={styles.pagination}>
-        {images.map((image, index) => (
-          <Text key={index} style={index === activePage ? styles.activePage : styles.page}>
-            <Icon name="circle" solid />
-          </Text>
-        ))}
-      </View>
-      <View style={styles.favouriteContainer}>
-        <TouchableOpacity
-          onPress={handlePressFavourite}
-          style={styles.favouriteButton}
-        >
-          <Text style={styles.favouriteText}>
-            <Icon name="heart" solid={favourite === activePage} size={32} color={favourite === activePage ? '#f00' : '#fff'} />
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <ImagesContext.Consumer>
+      {
+        ({ imagesCtx, toggleImage }) => {
+          const handlePressFavourite = () => {
+            toggleImage(id, activePage)
+          }
+
+          const isFavorite = () => _.includes(_.get(imagesCtx, id), activePage);
+        
+          return (
+            <View style={styles.container}>
+              <ScrollView
+                pagingEnabled
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                onScroll={handleScroll}
+                style={styles.scroll}
+                scrollEnabled={images.length > 0}
+              >
+                { images.length > 0 ? (
+                  images.map((image, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: image}}
+                      style={styles.image}
+                    />
+                  ))
+                ) : (
+                  <Image source={logo} style={styles.image} />
+                )
+              }
+              </ScrollView>
+              <View style={styles.pagination}>
+                {images.map((image, index) => (
+                  <Text key={index} style={index === activePage ? styles.activePage : styles.page}>
+                    <Icon name="circle" solid />
+                  </Text>
+                ))}
+              </View>
+              {images.length > 0 && <View style={styles.favouriteContainer}>
+                <TouchableOpacity
+                  onPress={handlePressFavourite}
+                  style={styles.favouriteButton}
+                >
+                  <Text style={styles.favouriteText}>
+                    <Icon name="heart" solid={isFavorite()} size={32} color={isFavorite() ? '#f00' : '#fff'} />
+                  </Text>
+                </TouchableOpacity>
+              </View>}
+            </View>
+          )
+        }
+      }
+    </ImagesContext.Consumer>
   );
 }
 
