@@ -38,34 +38,32 @@ const Home = ({ navigation }: Props) => {
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        <Text style={styles.title}>Latest Launches</Text>
-        <FlatList
-          data={data.launchesPast}
-          renderItem={({ item }: { item: LaunchType }) => (
-            <View>
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => navigation.push('Launch', { launch: item })}
-              >
-                <Image
-                  source={{ uri: item.links.flickr_images[0] }}
-                  style={styles.cardImage}
-                />
-                <View style={styles.infoContainer}>
-                  <Text style={styles.missionTitle}>{item.mission_name}</Text>
-                  <Text style={styles.missionDate}>{moment(item.launch_date_local).startOf('day').fromNow()}</Text>
-                </View>
-                <View style={styles.linkContainer}>
-                  <Icon style={styles.navigationIcon} name="chevron-right" />
-                </View>
-              </TouchableOpacity>
-            </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Latest Launches</Text>
+      <FlatList
+        data={data.launchesPast}
+        renderItem={({ item }: { item: LaunchType }) => (
+          <View>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.push('Launch', { launch: item })}
+            >
+              <Image
+                source={{ uri: item.links.flickr_images[0] }}
+                style={styles.cardImage}
+              />
+              <View style={styles.infoContainer}>
+                <Text style={styles.missionTitle}>{item.mission_name}</Text>
+                <Text style={styles.missionDate}>{moment(item.launch_date_local).startOf('day').fromNow()}</Text>
+              </View>
+              <View style={styles.linkContainer}>
+                <Icon style={styles.navigationIcon} name="chevron-right" />
+              </View>
+            </TouchableOpacity>
+          </View>
 
-          )}
-        />
-      </ScrollView>
+        )}
+      />
     </SafeAreaView>
   );
 }
