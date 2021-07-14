@@ -5,9 +5,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { MyStack } from './src/Navigation';
 
 const client = new ApolloClient({
-  uri: '',
+  uri: 'https://api.spacex.land/graphql/',
   cache: new InMemoryCache()
 });
+
+console.log('teste');
 
 export default function App() {
   return (

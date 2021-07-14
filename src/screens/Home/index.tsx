@@ -1,42 +1,76 @@
 import React from 'react';
 import { View, Text, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../Navigation';
-import { ScrollView } from 'react-native-gesture-handler';
+import { LaunchType, RootStackParamList } from '../../Navigation';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { gql, useQuery } from '@apollo/client'
+import AppLoading from 'expo-app-loading';
+import moment from 'moment';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // import { Container } from './styles';
 
+const LAUNCHES_QUERY = gql`
+  query Launches {
+    launchesPast(limit: 10) {
+      mission_name
+      launch_date_local
+      launch_site {
+        site_name_long
+      }
+      links {
+        article_link
+        flickr_images
+      }
+      rocket {
+        rocket_name
+      }
+    }
+  }
+`;
+
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
+type ItemProps = StackScreenProps<RootStackParamList, 'Home'>;
 
 const Home = ({ navigation }: Props) => {
+  const { data, loading } = useQuery(LAUNCHES_QUERY)
+
+  if (loading) {
+    return <AppLoading />
+  }
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Latest Lauches</Text>
-      {[0,1,2,3,4,5,6,7,8,9].map(idx => (
-        <View key={idx}>
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.push('Mission', { id: idx })}
-          >
-            <Image
-              source={{ uri: 'https://live.staticflickr.com/65535/50630802488_8cc373728e_o.jpg' }}
-              style={styles.cardImage}
-            />
-            <View style={styles.infoContainer}>
-              <Text style={styles.missionTitle}>Mission Name {idx}</Text>
-              <Text style={styles.missionDate}>May 14th, 2021</Text>
-            </View>
-            <View style={styles.linkContainer}>
+    <SafeAreaView>
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Latest Launches</Text>
+        <FlatList
+          data={data.launchesPast}
+          renderItem={({ item }: { item: LaunchType }) => (
+            <View>
               <TouchableOpacity
+                style={styles.card}
+                onPress={() => navigation.push('Launch', { launch: item })}
               >
-                <Icon style={styles.navigationIcon} name="chevron-right" />
+                <Image
+                  source={{ uri: item.links.flickr_images[0] }}
+                  style={styles.cardImage}
+                />
+                <View style={styles.infoContainer}>
+                  <Text style={styles.missionTitle}>{item.mission_name}</Text>
+                  <Text style={styles.missionDate}>{moment(item.launch_date_local).startOf('day').fromNow()}</Text>
+                  {/* <Text style={styles.missionDate}>{moment(item.launch_date_local).format("MMM Do, YYYY")}</Text> */}
+                </View>
+                <View style={styles.linkContainer}>
+                  <Icon style={styles.navigationIcon} name="chevron-right" />
+                </View>
               </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </ScrollView>
+
+          )}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

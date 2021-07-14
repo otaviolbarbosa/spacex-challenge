@@ -1,42 +1,51 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigation';
+import moment from 'moment';
+import { useCallback } from 'react';
+import Slider from '../../components/Slider';
 
 // import { Container } from './styles';
 
-type Props = StackScreenProps<RootStackParamList, 'Mission'>;
+type Props = StackScreenProps<RootStackParamList, 'Launch'>;
 
-const Home = ({ navigation }: Props) => {
+const Launch = ({ route }: Props) => {
+  const { params: { launch }} = route;
+  const handlePress = useCallback(async () => {
+    launch.links.article_link && await Linking.openURL(launch.links.article_link);
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: 'https://live.staticflickr.com/65535/50630802488_8cc373728e_o.jpg' }}
-          style={styles.image}
-        />
+        <Slider images={launch.links.flickr_images.slice(0, 3)} />
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoContainerWrapper}>
           <View style={styles.infoUnitContainer}>
             <Text style={styles.label}>Mission</Text>
-            <Text style={styles.value}>Mission Name Test</Text>
+            <Text style={styles.value}>{launch.mission_name}</Text>
           </View>
           <View style={styles.infoUnitContainer}>
             <Text style={styles.label}></Text>
-            <Text style={styles.valueSmall}>5 days ago</Text>
+            <Text style={styles.valueSmall}>{moment(launch.launch_date_local).startOf('day').fromNow()}</Text>
           </View>
           <View style={styles.infoUnitContainer}>
             <Text style={styles.label}>Rocket</Text>
-            <Text style={styles.value}>Rocket Name Test</Text>
+            <Text style={styles.value}>{launch.rocket.rocket_name}</Text>
           </View>
           <View style={styles.infoUnitContainer}>
             <Text style={styles.label}>Site</Text>
             <Text style={styles.value}>Site Name Test</Text>
           </View>
-          <TouchableOpacity style={styles.articleLinkContainer}>
-            <Text style={styles.articleLinkText}>See Article</Text>
-          </TouchableOpacity>
+          { launch.links.article_link && (
+            <TouchableOpacity
+              style={styles.articleLinkContainer}
+              onPress={handlePress}
+            >
+              <Text style={styles.articleLinkText}>See Article</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -91,4 +100,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Launch;
