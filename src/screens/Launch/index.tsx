@@ -79,11 +79,14 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   label: {
-    color: '#666'
+    color: '#666',
+    marginRight: 10
   },
   value: {
-    fontSize: 22,
-    fontWeight: 'bold'
+    flex: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'right'
   },
   valueSmall: {
   },
