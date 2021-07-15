@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import { Image, View, Text, ScrollView, Dimensions, StyleSheet, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TouchableOpacity
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 
-import { ImagesContext } from '../../../App';
+import { useFavourites } from '../../store/FavouritesContext';
 
 import logo from '../../../assets/spacex-big-logo.png';
 
@@ -17,6 +27,7 @@ type Props = {
 
 const Slider = ({ id, images }: Props) => {
   const [activePage, setActivePage] = useState<number>(0);
+  const { state, dispatch } = useFavourites();
 
   const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
@@ -25,61 +36,53 @@ const Slider = ({ id, images }: Props) => {
       setActivePage(slide);
   }
 
-  return (
-    <ImagesContext.Consumer>
-      {
-        ({ imagesCtx, toggleImage }) => {
-          const handlePressFavourite = () => {
-            toggleImage(id, activePage)
-          }
+  const handlePressFavourite = () => {
+    dispatch({ type: 'toggleImage', payload: { id, page: activePage }})
+  }
 
-          const isFavorite = () => _.includes(_.get(imagesCtx, id), activePage);
-        
-          return (
-            <View style={styles.container}>
-              <ScrollView
-                pagingEnabled
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                onScroll={handleScroll}
-                style={styles.scroll}
-                scrollEnabled={images.length > 0}
-              >
-                { images.length > 0 ? (
-                  images.map((image, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: image}}
-                      style={styles.image}
-                    />
-                  ))
-                ) : (
-                  <Image source={logo} style={styles.image} />
-                )
-              }
-              </ScrollView>
-              <View style={styles.pagination}>
-                {images.map((image, index) => (
-                  <Text key={index} style={index === activePage ? styles.activePage : styles.page}>
-                    <Icon name="circle" solid />
-                  </Text>
-                ))}
-              </View>
-              {images.length > 0 && <View style={styles.favouriteContainer}>
-                <TouchableOpacity
-                  onPress={handlePressFavourite}
-                  style={styles.favouriteButton}
-                >
-                  <Text style={styles.favouriteText}>
-                    <Icon name="heart" solid={isFavorite()} size={32} color={isFavorite() ? '#f00' : '#fff'} />
-                  </Text>
-                </TouchableOpacity>
-              </View>}
-            </View>
-          )
-        }
+  const isFavorite = () => _.includes(_.get(state.favourites, id), activePage);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        pagingEnabled
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        style={styles.scroll}
+        scrollEnabled={images.length > 0}
+      >
+        { images.length > 0 ? (
+          images.map((image, index) => (
+            <Image
+              key={index}
+              source={{ uri: image}}
+              style={styles.image}
+            />
+          ))
+        ) : (
+          <Image source={logo} style={styles.image} />
+        )
       }
-    </ImagesContext.Consumer>
+      </ScrollView>
+      <View style={styles.pagination}>
+        {images.map((image, index) => (
+          <Text key={index} style={index === activePage ? styles.activePage : styles.page}>
+            <Icon name="circle" solid />
+          </Text>
+        ))}
+      </View>
+      {images.length > 0 && <View style={styles.favouriteContainer}>
+        <TouchableOpacity
+          onPress={handlePressFavourite}
+          style={styles.favouriteButton}
+        >
+          <Text style={styles.favouriteText}>
+            <Icon name="heart" solid={isFavorite()} size={32} color={isFavorite() ? '#f00' : '#fff'} />
+          </Text>
+        </TouchableOpacity>
+      </View>}
+    </View>
   );
 }
 

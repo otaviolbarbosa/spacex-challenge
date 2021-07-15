@@ -1,6 +1,6 @@
 # SpaceX Latest Launches
 
-This React Native project is a code challenge and I had so much fun during the development process! Basically, it aims to display information about the latest mission launches.
+This React Native project is a code challenge and I had so much fun during the development process! Basically, it aims to display information about the latest mission launches from SpaceX.
 
 
 ## Dependencies

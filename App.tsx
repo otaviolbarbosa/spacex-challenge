@@ -1,44 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import _ from 'lodash';
+
+import { Provider as ApolloProvider } from './src/services/ApolloProvider';
+import { FavouritesProvider } from './src/store/FavouritesContext';
+
 import { StackNavigation } from './src/Navigation';
 
-const client = new ApolloClient({
-  uri: 'https://api.spacex.land/graphql/',
-  cache: new InMemoryCache()
-});
-
-const CTX_INITIAL_VALUE = {
-  imagesCtx: {},
-  toggleImage: (id: string, index: number) => {}
-};
-
-export const ImagesContext = createContext(CTX_INITIAL_VALUE);
-
 export default function App() {
-  const [imagesCtx, setImagesCtx] = useState({});
-  
-  const toggleImage = (id: string, index: number) => {
-    if(Object.keys(imagesCtx).includes(id)) {
-      let currCtx = _.get(imagesCtx, [id]);
-
-      if(_.includes(currCtx, index))
-        currCtx = currCtx.filter((idx: number) => index !== idx);
-      else
-        currCtx.push(index);
-
-      setImagesCtx({ ...imagesCtx, [id]: currCtx })
-    } else {
-      setImagesCtx({ ...imagesCtx, [id]: [index] });
-    }
-  }
-
   return (
-    <ApolloProvider client={client}>
-      <ImagesContext.Provider value={{imagesCtx, toggleImage}}>
+    <ApolloProvider>
+      <FavouritesProvider>
         <StackNavigation />
-      </ImagesContext.Provider>
+      </FavouritesProvider>
     </ApolloProvider>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../Navigation';
+import { RootStackParamList } from '../../Navigation/types';
 import moment from 'moment';
 import { useCallback } from 'react';
 import Slider from '../../components/Slider';

@@ -1,8 +1,8 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { LaunchType, RootStackParamList } from '../../Navigation';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { LaunchType, RootStackParamList } from '../../Navigation/types';
+import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { gql, useQuery } from '@apollo/client'
 import AppLoading from 'expo-app-loading';

@@ -2,29 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from './screens/Home';
-import LaunchScreen from './screens/Launch';
-
-export type LaunchType = {
-  id: string
-  mission_name: string
-  launch_date_local: string
-  launch_site: {
-    site_name_long: string
-  }
-  links: {
-    article_link?: string,
-    flickr_images: string[]
-  },
-  rocket: {
-    rocket_name: string
-  }
-}
-
-export type RootStackParamList = {
-  Home: undefined
-  Launch: { launch: LaunchType };
-};
+import HomeScreen from '../screens/Home';
+import LaunchScreen from '../screens/Launch';
+import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
