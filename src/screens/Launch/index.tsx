@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Navigation/types';
 import moment from 'moment';
 import { useCallback } from 'react';
 import Slider from '../../components/Slider';
+import { StatusBar } from 'expo-status-bar';
 
 type Props = StackScreenProps<RootStackParamList, 'Launch'>;
 
@@ -17,7 +18,7 @@ const Launch = ({ route }: Props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#ecf0f1" />
+      <StatusBar style="light" />
       <View style={styles.sliderContainer}>
         <Slider id={launch.id} images={launch.links.flickr_images.slice(0, 3)} />
       </View>
